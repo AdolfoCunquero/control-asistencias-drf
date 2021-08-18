@@ -17,6 +17,7 @@ class Seccion(models.Model):
 
     class Meta:
         db_table="section"
+        unique_together = ("course_code","section","year","semester")
         verbose_name = "Seccion"
         verbose_name_plural = "Secciones"
 
