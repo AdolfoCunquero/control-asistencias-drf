@@ -10,8 +10,8 @@ class SeccionApiView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
-        snippets = Seccion.objects.all()
-        serializer = SeccionListSerializser(snippets, many=True)
+        seccion = Seccion.objects.all()
+        serializer = SeccionListSerializser(seccion, many=True)
         
         return Response(serializer.data)
 
@@ -33,19 +33,19 @@ class SeccionDetailApiView(APIView):
             raise HTTP_404_NOT_FOUND
 
     def get(self, request, pk, format=None):
-        snippet = self.get_object(pk)
-        serializer = SeccionCreateSerializser(snippet)
+        section = self.get_object(pk)
+        serializer = SeccionCreateSerializser(section)
         return Response(serializer.data)
 
     def put(self, request, pk, format=None):
-        snippet = self.get_object(pk)
-        serializer = SeccionCreateSerializser(snippet, data=request.data)
+        section = self.get_object(pk)
+        serializer = SeccionCreateSerializser(section, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
-        snippet = self.get_object(pk)
-        snippet.delete()
+        section = self.get_object(pk)
+        section.delete()
         return Response(status=HTTP_204_NO_CONTENT)

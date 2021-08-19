@@ -22,9 +22,9 @@ from curso.api.router import router_curso
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Blog",
+        title="Control Asistencias",
         default_version='v1',
-        description='Documentacion de API Blog',
+        description='Documentacion de API Control asistencias',
         terms_of_service='',
         contact = openapi.Contact(email='adolfo@gmail.com'),
         license = openapi.License(name='BSD License'),
@@ -40,4 +40,7 @@ urlpatterns = [
     path('api/', include('user.api.router')),
     path('api/', include(router_curso.urls)),
     path('api/', include('seccion.api.router')),
+    path('api/', include('asignacion_curso.api.router')),
+    path('api/', include('control_asistencia.api.router')),
+    path('api/', include('estadisticas.api.router')),
 ]
