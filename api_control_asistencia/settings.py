@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'asignacion_curso',
     'control_asistencia',
     'estadisticas',
+    'django_filters'
 ]
 
 MIDDLEWARE = [

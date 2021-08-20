@@ -1,9 +1,12 @@
 from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from asignacion_curso.models import AsignacionCurso
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
 from asignacion_curso.api.serializers import AsignacionCursoListSerializer, AsignacionCursoStoreSerializer
 from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import OrderingFilter
 
 class AsignacionCursoView(APIView):
     
@@ -68,6 +71,19 @@ class AsignacionCursoDetailView(APIView):
         return Response(status=HTTP_404_NOT_FOUND)
 
         
+class AsignacionCursoStudentView(ListAPIView):
+    filter_backends = [OrderingFilter,DjangoFilterBackend]
+    serializer_class = AsignacionCursoListSerializer
+    permission_classes = [IsAuthenticated]
+    queryset = AsignacionCurso.objects.all()
+
+    ordering = ["-id"]
+    filterset_fields = ["username_student__username"]
+
+    # def get(self, request, *args, **kwargs):
+    #     asignacion = AsignacionCurso.objects.filter(username_student=request.user)
+    #     serializer = AsignacionCursoListSerializer(asignacion, many=True)
+    #     return Response(data = serializer.data, status = HTTP_200_OK)
 
 
 
