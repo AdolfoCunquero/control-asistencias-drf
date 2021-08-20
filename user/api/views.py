@@ -11,6 +11,7 @@ class RolView(ListAPIView):
     serializer_class = RolSerializer
     permission_classes = [IsAuthenticated]    
      
+     
 
 class RegisterView(APIView):
     def post(self, request):
