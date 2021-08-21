@@ -1,17 +1,25 @@
+from django.db.models import query
 from rest_framework.generics import ListAPIView
 from user.models import User, Rol
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from user.api.serializers import UserRegisterSerializer, UserSerializer, UserUpdateSerialier, RolSerializer
+from user.api.serializers import UserRegisterSerializer, UserSerializer, UserUpdateSerialier, RolSerializer, UserListSerializer
 from rest_framework.permissions import IsAuthenticated
+from django_filters.rest_framework import DjangoFilterBackend
 
 class RolView(ListAPIView):
     queryset = Rol.objects.all()
     serializer_class = RolSerializer
-    permission_classes = [IsAuthenticated]    
+    #permission_classes = [IsAuthenticated]    
      
-     
+class AllUserListView(ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserListSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['rol__id']
+
+
 
 class RegisterView(APIView):
     def post(self, request):
@@ -24,7 +32,7 @@ class RegisterView(APIView):
         return Response(status = status.HTTP_400_BAD_REQUEST, data = serializer.errors)
 
 class UserView(APIView):
-    permission_classes =[IsAuthenticated]
+    #permission_classes =[IsAuthenticated]
 
     def get(self, request):
         serializer = UserSerializer(request.user)
