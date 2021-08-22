@@ -4,6 +4,6 @@ from rest_framework.permissions import IsAuthenticated
 from curso.api.serializers import CursoSerializer
 
 class CursoApiViewSet(ModelViewSet):
-    #permission_classes= [IsAuthenticated]
+    permission_classes= [IsAuthenticated]
     serializer_class = CursoSerializer
     queryset = Curso.objects.all()
