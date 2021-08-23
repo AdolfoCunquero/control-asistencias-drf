@@ -9,7 +9,10 @@ class Seccion(models.Model):
     year = models.IntegerField()
     semester = models.IntegerField()
     username_professor = models.ForeignKey(User, on_delete=PROTECT)
+    start_time = models.TimeField()
+    end_time = models.TimeField()
     status = models.BooleanField(default=True)
+
 
     def __str__(self):
         #return self.section
