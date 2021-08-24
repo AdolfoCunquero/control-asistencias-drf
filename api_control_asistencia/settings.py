@@ -84,12 +84,23 @@ WSGI_APPLICATION = 'api_control_asistencia.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'DBControlAsistenciaUMG',
+            'USER': 'usr_control_asistencia',
+            'PASSWORD': 'C0ntr0l@515t3nc1@',
+            'HOST': 'proyecto2.cbfae7gyoyeq.us-east-2.rds.amazonaws.com',
+            'PORT': '3306',
+        }
     }
-}
 
 
 # Password validation
