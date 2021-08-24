@@ -29,6 +29,11 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ["id","email","username","first_name","last_name", "rol"]
 
+class UserStudentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id","carnet","email","username","first_name","last_name", "rol"]
+
 
 class UserUpdateSerialier(serializers.ModelSerializer):
     class Meta:
