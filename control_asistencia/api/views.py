@@ -22,27 +22,7 @@ class ControlAsistenciaListView(APIView):
     renderer_classes = [JSONRenderer]
 
     def get(self, request, format=None):
-        sql = """
-        SELECT 
-            ac.id,
-            usr.username,
-            usr.first_name,
-            usr.last_name,
-            usr.carnet,
-            s.course_code_id,
-            c.course_name,
-            s.section,
-            s.start_time,
-            s.end_time,
-            ca.date
-        FROM user_user usr
-        INNER JOIN asignacion_curso ac ON usr.id = ac.username_student_id
-        INNER JOIN section s ON s.id = ac.section_id
-        INNER JOIN curso c ON c.course_code = s.course_code_id
-        LEFT JOIN control_asistencia ca ON ca.asignation_id = ac.id
-        WHERE usr.username = '{}'
-        AND (ca.date = DATE('now') OR ca.date IS NULL)
-        """.format(request.user)
+        sql = "CALL sp_obtener_asistencia_hoy('{}');".format(request.user)
 
         data =[]
         # with connection.cursor() as cursor:
