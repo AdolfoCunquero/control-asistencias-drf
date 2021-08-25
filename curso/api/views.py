@@ -7,3 +7,6 @@ class CursoApiViewSet(ModelViewSet):
     permission_classes= [IsAuthenticated]
     serializer_class = CursoSerializer
     queryset = Curso.objects.all()
+
+
+

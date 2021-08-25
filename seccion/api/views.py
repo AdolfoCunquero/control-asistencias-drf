@@ -49,3 +49,13 @@ class SeccionDetailApiView(APIView):
         section = self.get_object(pk)
         section.delete()
         return Response(status=HTTP_204_NO_CONTENT)
+
+class SeccionProfessorApiView(APIView):
+    permission_classes= [IsAuthenticated]
+    #serializer_class = SeccionListSerializser
+
+    def get(self, request, format=None):
+        course = Seccion.objects.filter(username_professor=request.user)
+        serializer = SeccionListSerializser(course, many=True)
+        
+        return Response(serializer.data)

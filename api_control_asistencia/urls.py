@@ -38,6 +38,7 @@ urlpatterns = [
     path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redocs/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('api/', include('user.api.router')),
+    #path('api/', include('curso.api.router')),
     path('api/', include(router_curso.urls)),
     path('api/', include('seccion.api.router')),
     path('api/', include('asignacion_curso.api.router')),

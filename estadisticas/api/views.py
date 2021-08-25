@@ -1,45 +1,42 @@
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from control_asistencia.models import ControlAsistencia
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.status import HTTP_200_OK
+from rest_framework.renderers import JSONRenderer
+from django.db import connection
 
-class EstadisticaPorCursoView(ListAPIView):
+class EstadisticaPorCursoView(APIView):
     permission_classes = [IsAuthenticated]
+    renderer_classes = [JSONRenderer]
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, course_code, fecha, *args, **kwargs):
     
-        sql = '''
-            SELECT 
-                MAX(ca.id) AS id,
-                c.course_code,
-                c.course_name,
-                s.year,
-                s.section,
-                s.semester,
-				u.username,
-                COUNT(0) AS asistencias
-            FROM curso c
-            INNER JOIN section s ON c.course_code = s.course_code_id
-            INNER JOIN asignacion_curso a ON s.id = a.section_id
-            INNER JOIN control_asistencia ca ON a.id = ca.asignation_id
-			INNER JOIN user_user u ON u.id = s.username_professor_id
-            WHERE c.status = 1 AND s.status = 1 AND a.status = 1 AND ca.status = 1 AND u.username = '{}'
-            GROUP BY c.course_code, c.course_name, s.year, s.section, s.semester, u.username;
-        '''.format(request.user)
+        sql = "CALL sp_estadisticas_por_curso('{}','{}','{}');".format(course_code,request.user, fecha)
         
         data =[]
-        for item in ControlAsistencia.objects.raw(sql):
+
+        data_row = self.my_custom_sql(sql)
+        
+        for item in data_row:
             data.append({
-                "course_code":item.course_code,
-                "course_name":item.course_name,
-                "year":item.year,
-                "section": item.section,
-                "semester":item.semester,
-                "asistencias":item.asistencias
+                "legend": item[0],
+                "conteo": item[1]
             })
+        # for item in ControlAsistencia.objects.raw(sql):
+        #     data.append({
+        #         "legend":item.legend,
+        #         "conteo":item.conteo
+        #     })
 
         return Response(data, status=HTTP_200_OK)
+
+    def my_custom_sql(self, query):
+        cursor = connection.cursor()
+        cursor.execute(query)
+        row = cursor.fetchall()
+        return row
 
 
 
